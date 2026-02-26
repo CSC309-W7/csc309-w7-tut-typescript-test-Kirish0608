@@ -7,7 +7,25 @@ export const apiResponse: unknown = [
 ];
 
 export function getUsersData(): User[] {
-  return apiResponse as User[]; // intentionally unsafe
+  if (!Array.isArray(apiResponse)) {
+    return [];
+  }
+
+  const user: User[] = [];
+
+  for (const i of apiResponse) {
+    const obj = i as any;
+    const age = Number(obj.age);
+
+      if (!Number.isNaN(age)) {
+        user.push({
+          name: obj.name,
+          age: age,
+        });
+      }
+  }
+
+  return user;
 }
 
 export function formatAges(users: User[]): string[] {
